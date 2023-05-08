@@ -4,7 +4,7 @@ from .models import Department, Employee
 from graphene_django.filter import DjangoFilterConnectionField
 from graphene import relay
 from graphql_relay import from_global_id
-from graphql_jwt_decorators import login_required
+from graphql_jwt.decorators import login_required
 
 
 class EmployeeNode(DjangoObjectType):
@@ -13,7 +13,7 @@ class EmployeeNode(DjangoObjectType):
         filter_fields = {
           'employee_name': ['exact', 'icontains'],
           'join_year': ['exact', 'icontains'],
-          'department': ['icontains'],
+          'department': ['exact'],
         }
         interfaces = (relay.Node, )
 
@@ -94,12 +94,13 @@ class EmployeeDeleteMutation(relay.ClientIDMutation):
         employee.delete()
         return EmployeeDeleteMutation(employee=None)
 
-class Mutation(graphene.AbstractType):
+class Mutation:
     create_department = DeptCreateMutation.Field()
     delete_department = DeptDeleteMutation.Field()
     create_employee = EmployeeCreateMutation.Field()
     update_employee = EmployeeUpdateMutation.Field()
     delete_employee = EmployeeDeleteMutation.Field()
+
 class Query(graphene.ObjectType):
     employee = graphene.Field(EmployeeNode, id=graphene.NonNull(graphene.ID))
     all_employees = DjangoFilterConnectionField(EmployeeNode)

@@ -54,23 +54,23 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-GRAPH_JWT = {
+GRAPHQL_JWT = {
     'JWT_VERIFY_EXPIRATION': True,
-    'JWT_EXPIRATION_DELTA': timedelta(minutes=3000),
+    'JWT_EXPIRATION_DELTA': timedelta(minutes=60),
 }
 
 CORS_ORIGIN_WHITELIST = [
     "http://localhost:3000",
 ]
 
-GRAPH_ENE = {
+GRAPHENE = {
     'SCHEMA': 'employee.schema.schema',
     'MIDDLEWARE': [
         'graphql_jwt.middleware.JSONWebTokenMiddleware',
     ]
 }
 
-AUTHENTIFICATION_BACKENDS = [
+AUTHENTICATION_BACKENDS = [
     'graphql_jwt.backends.JSONWebTokenBackend',
     'django.contrib.auth.backends.ModelBackend',
 ]
